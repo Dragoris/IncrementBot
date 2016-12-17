@@ -3,15 +3,10 @@ module.exports = function(robot) {
     robot.hear(/[+]{2}/, function(res) {
     	var target = res.message.text.split(' ')[0]
 
-    	console.log(robot.brain.data)
     	if (robot.brain.data.users[target] === undefined) {
-    		console.log('not there')
     		robot.brain.data.users[target] = 1
-    		console.log(robot.brain.data.users)
     	} else {
-    		console.log('have another')
     		robot.brain.data.users[target] = robot.brain.data.users[target]+1
-    		console.log(robot.brain.data.users)
     	}
     	res.reply('thats so nice of you')
     })
@@ -19,19 +14,21 @@ module.exports = function(robot) {
     	var target = res.message.text.split(' ')[0]
 
     	if (robot.brain.data.users[target] === undefined) {
-    		console.log('negitives??')
+
     		robot.brain.data.users[target] = -1
-    		console.log(robot.brain.data.users)
     	} else {
-    		console.log('minus for you')
     		robot.brain.data.users[target] = robot.brain.data.users[target]-1
-    		console.log(robot.brain.data.users)
     	}
 
     	res.reply('sad times')
     })
     robot.hear(/(leaderboard)/i, function(res) {
-    	res.reply(JSON.stringify(robot.brain.data.users))
+    	var obj = robot.brain.data.users;
+    	var scoreBoard = obj.keys(points).sort((a,b) {
+    	 return points[a] - points[b]
+    	})
+
+    	res.reply(JSON.stringify(scoreBoard))
     	
     })
 
