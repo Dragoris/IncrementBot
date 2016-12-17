@@ -30,9 +30,9 @@ module.exports = function(robot) {
     	}
     	var sorted = scoreBoard.sort(function(a,b) {
     	 return a - b
-    	})
+    	}).replace(/[["\],]/g, '')
 
-    	res.reply(JSON.stringify(scoreBoard))
+    	res.reply(JSON.stringify(sorted))
     	
     })
 
