@@ -24,7 +24,7 @@ module.exports = function(robot) {
     })
     robot.hear(/(leaderboard)/i, function(res) {
     	var points = robot.brain.data.users;
-    	var scoreBoard = Object.keys(points).sort((a,b) {
+    	var scoreBoard = Object.keys(points).sort(function(a,b) {
     	 return points[a] - points[b]
     	})
 
