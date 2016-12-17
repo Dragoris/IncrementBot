@@ -1,61 +1,69 @@
 module.exports = function(robot) {
     //process user's message
-    robot.hear(/[+]{2}/, function(res) {
-    	var recipient = res.message.text.split(' ')[0]
+    robot.hear(/(@[a-z]* [+]{2})/, function(res) {
 
-    	if (robot.brain.data.users[recipient] === undefined) {
-    		robot.brain.data.users[recipient] = 1
+    	var recipient = res.message.text.split(' ')[0];
+    	var sender = res.message.user.name;
+    	var msg = res.message.text.split('++')[1]
+    	var random = function(arr) {
+    		return Math.floor(Math.random() * arr.length)
+    	};
+    	var lolNo = ['http://reactiongifs.com/?p=25434','http://reactiongifs.com/?p=24785','http://reactiongifs.com/?p=24469',
+    				'http://reactiongifs.com/?p=24194','http://reactiongifs.com/?p=22145','http://reactiongifs.com/?p=21937' ]
+    	if (recipient === '@' + sender) {
+    		return res.send(lolNo[random(lolNo)])
     	} else {
-    		robot.brain.data.users[recipient] = robot.brain.data.users[recipient]+1
+	    	if (robot.brain.data.users[recipient] === undefined) {
+	    		robot.brain.data.users[recipient] = 1
+	    	} else {
+	    		robot.brain.data.users[recipient] = robot.brain.data.users[recipient]+1
+	    	}
     	}
-    	res.reply('thats so nice of you')
+    	robot.http('https://spreadsheets.google.com/feeds/list/1eEa2ra2yHBXVZ_ctH4J15tFSGEu-VTSunsrvaCAV598/od6/public/values?alt=json')		
+    		.get()(function(err, resp, body){ 
+    			var list = JSON.parse(body).feed.entry;
+    			var compliment = list[random(list)].gsx$compliments.$t;
+    			if (msg.length) {
+    				res.send(recipient + ', ' + '@' + sender + ' wants you to know that ' + compliment + '\n They go on to elaborate: ' + msg + '\n +1')
+    			} else {
+    			res.send(recipient + ', ' + '@' + sender + ' wants you to know that ' + compliment + '\n +1')
+    			}
+    	})
+
     })
-    robot.hear(/[-]{2}/, function(res) {
-    	var recipient = res.message.text.split(' ')[0]
+    robot.hear(/(@[a-z]* [--]{2})/, function(res) {
+    	var whyTho = []
+    	var recipient = res.message.text.split(' ')[0];
+    	var sender = res.message.user.name;
+    	
 
     	if (robot.brain.data.users[recipient] === undefined) {
-
     		robot.brain.data.users[recipient] = -1
     	} else {
     		robot.brain.data.users[recipient] = robot.brain.data.users[recipient]-1
     	}
-
-    	res.reply('sad times')
+    	if (recipient === '@' + sender) {
+    		res.send('http://www.reactiongifs.com/r/but-why.gif')
+    	} else {
+    		res.send(recipient + ', ' + '@' + sender + ' has unspeakable things to say about you, your family, and your way of life! \n Suffice it to say, you just lost a point :(')
+    	}
     })
-    robot.hear(/(leaderboard)/i, function(res) {
+    robot.hear(/(scoreboard)/i, function(res) {
     	var scoreBoard = [];
     	var people = robot.brain.data.users;
+
     	for (var points in people) {
     		scoreBoard.push([points, people[points]])
     	}
+
     	var sorted = scoreBoard.sort(function(a,b) {
     	 return a - b
-    	}).replace(/[["\],]/g, '')
+    	}).map(function(x) {
+    		return x.join(' = ')
+    	}).join('\n')
 
-    	res.reply(JSON.stringify(sorted))
+    	res.send('The current score is :\n' + sorted)
     	
     })
-
 };
 
-/*{ data: { users: {}, _private: {} },
-  autoSave: false,
-  saveInterval: 
-   { _idleTimeout: 5000,
-     _idlePrev: 
-      { _idleTimeout: 5000,
-        _idlePrev: [Object],
-        _idleNext: [Circular],
-        _idleStart: 1481701416672,
-        _onTimeout: [Function: wrapper],
-        _repeat: true },
-     _idleNext: 
-      { _idleNext: [Object],
-        _idlePrev: [Circular],
-        msecs: 5000,
-        ontimeout: [Function: listOnTimeout] },
-     _idleStart: 1481701415467,
-     _onTimeout: [Function: wrapper],
-     _repeat: true },
-  _events: { save: [Function], close: [Function] } }
-*/
