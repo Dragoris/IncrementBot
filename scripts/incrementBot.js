@@ -23,8 +23,8 @@ module.exports = function(robot) {
     	res.reply('sad times')
     })
     robot.hear(/(leaderboard)/i, function(res) {
-    	var obj = robot.brain.data.users;
-    	var scoreBoard = obj.keys(points).sort((a,b) {
+    	var points = robot.brain.data.users;
+    	var scoreBoard = Object.keys(points).sort((a,b) {
     	 return points[a] - points[b]
     	})
 
