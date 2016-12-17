@@ -1,31 +1,35 @@
 module.exports = function(robot) {
     //process user's message
     robot.hear(/[+]{2}/, function(res) {
-    	var target = res.message.text.split(' ')[0]
+    	var recipient = res.message.text.split(' ')[0]
 
-    	if (robot.brain.data.users[target] === undefined) {
-    		robot.brain.data.users[target] = 1
+    	if (robot.brain.data.users[recipient] === undefined) {
+    		robot.brain.data.users[recipient] = 1
     	} else {
-    		robot.brain.data.users[target] = robot.brain.data.users[target]+1
+    		robot.brain.data.users[recipient] = robot.brain.data.users[recipient]+1
     	}
     	res.reply('thats so nice of you')
     })
     robot.hear(/[-]{2}/, function(res) {
-    	var target = res.message.text.split(' ')[0]
+    	var recipient = res.message.text.split(' ')[0]
 
-    	if (robot.brain.data.users[target] === undefined) {
+    	if (robot.brain.data.users[recipient] === undefined) {
 
-    		robot.brain.data.users[target] = -1
+    		robot.brain.data.users[recipient] = -1
     	} else {
-    		robot.brain.data.users[target] = robot.brain.data.users[target]-1
+    		robot.brain.data.users[recipient] = robot.brain.data.users[recipient]-1
     	}
 
     	res.reply('sad times')
     })
     robot.hear(/(leaderboard)/i, function(res) {
-    	var points = robot.brain.data.users;
-    	var scoreBoard = Object.keys(points).sort(function(a,b) {
-    	 return points[a] - points[b]
+    	var scoreBoard = [];
+    	var people = robot.brain.data.users;
+    	for (var points in people) {
+    		scoreBoard.push([points, people[points])
+    	}
+    	var sorted = scoreBoard.sort(function(a,b) {
+    	 return a - b
     	})
 
     	res.reply(JSON.stringify(scoreBoard))
