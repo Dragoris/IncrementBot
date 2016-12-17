@@ -32,7 +32,7 @@ module.exports = function(robot) {
     })
     robot.hear(/(leaderboard)/i, function(res) {
     	res.reply(JSON.stringify(robot.brain.data.users))
-    	console.log(JSON.stringify(robot.brain.data.users))
+    	
     })
 
 };
