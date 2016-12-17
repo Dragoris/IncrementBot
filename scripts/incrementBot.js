@@ -26,7 +26,7 @@ module.exports = function(robot) {
     	var scoreBoard = [];
     	var people = robot.brain.data.users;
     	for (var points in people) {
-    		scoreBoard.push([points, people[points])
+    		scoreBoard.push([points, people[points]])
     	}
     	var sorted = scoreBoard.sort(function(a,b) {
     	 return a - b
