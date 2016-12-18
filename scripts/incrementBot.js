@@ -1,7 +1,7 @@
 module.exports = function(robot) {
-    //process user's message
+    
     robot.hear(/(@[a-z_.-]* [+]{2})/, function(res) {
-
+    	res.send(robot.brain.data)
     	var recipient = res.message.text.split(' ')[0];
     	var sender = res.message.user.name;
     	var msg = res.message.text.split('++')[1]
@@ -67,7 +67,7 @@ module.exports = function(robot) {
     			console.log(resp)
     		})*/
 
-    	res.send('The current score is :\n' + sorted)
+    	res.send('The current standings are :\n' + sorted)
     	
     })
 };
