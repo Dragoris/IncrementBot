@@ -1,6 +1,5 @@
 module.exports = function(robot) {
     robot.hear(/(@[a-z_.-]* [+]{2})/, function(res) {
-    	console.log(robot.brain.data)
     	var recipient = res.message.text.split(' ')[0];
     	var sender = res.message.user.name;
     	var msg = res.message.text.split('++')[1]
@@ -69,7 +68,7 @@ module.exports = function(robot) {
     	res.send('The current standings are :\n' + sorted)
     	
     })
-    robot.hear(/(nuke it ++)/, function(res) {
+    robot.hear(/(nuke it [+]{2})/, function(res) {
     	robot.brain.data.users = {};
     	res.send('The standings have been reset')
     })
