@@ -1,6 +1,6 @@
 module.exports = function(robot) {
     //process user's message
-    robot.hear(/(@[a-z]* [+]{2})/, function(res) {
+    robot.hear(/(@[a-z_.-]* [+]{2})/, function(res) {
 
     	var recipient = res.message.text.split(' ')[0];
     	var sender = res.message.user.name;
@@ -31,8 +31,7 @@ module.exports = function(robot) {
     	})
 
     })
-    robot.hear(/(@[a-z]* [--]{2})/, function(res) {
-    	var whyTho = []
+    robot.hear(/(@[a-z_.-]* [--]{2})/, function(res) {
     	var recipient = res.message.text.split(' ')[0];
     	var sender = res.message.user.name;
     	
@@ -60,7 +59,13 @@ module.exports = function(robot) {
     	 return b[1] - a[1]
     	}).map(function(x) {
     		return x.join(' = ')
-    	}).join('\n')
+    	}).join('\n');
+    	/*sorted[0][2] = ':crown:';
+    	console.log(sorted[0][2], sorted[0], sorted)
+    	robot.http('https://slack.com/api/emoji.list/xoxb-118260580103-fOctuK0xKky1X5sLdhZEqbcv')
+    		.get()(function(err, resp, body){
+    			console.log(resp)
+    		})*/
 
     	res.send('The current score is :\n' + sorted)
     	
