@@ -73,7 +73,7 @@ module.exports = function(robot) {
     	res.send('The current standings are :\n' + sorted)	
     })
     robot.hear(/(nuke it [+]{2})/, function(res) {
-        var sender = res.message.user.name;
+      var sender = res.message.user.name;
     	robot.brain.data.users = {};
     	res.send('The standings have been reset by ' + sender)
     })
