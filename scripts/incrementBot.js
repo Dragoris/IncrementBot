@@ -31,7 +31,7 @@ module.exports = function(robot) {
     	})
 
     })
-    robot.hear(/(@[a-z_.-]* [--]{2})/, function(res) {
+    robot.hear(/(@[a-z_.-]* [-]{2})/, function(res) {
     	var recipient = res.message.text.split(' ')[0];
     	var sender = res.message.user.name;
     	
@@ -74,8 +74,8 @@ module.exports = function(robot) {
     })
     robot.hear(/(nuke it [+]{2})/, function(res) {
         var sender = res.message.user.name;
-    	robot.brain.data.users = {};
-    	res.send('The standings have been reset by ' + sender)
+    	robot.brain.data.users = {}; //reset brain to empty standings
+    	res.send('The standings have been reset by @' + sender) //#snitch
     })
 };
 
