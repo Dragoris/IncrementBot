@@ -58,11 +58,14 @@ module.exports = function(robot) {
     	var sorted = scoreBoard.sort(function(a,b) {
     	 return b[1] - a[1]
     	});
-        //add emojis
-    	sorted[0].push(':crown:');
-    	sorted[1].push(':trophy:');
-    	sorted[2].push(':medal:');
-    	if (sorted[sorted.length-1][1] < 0) sorted[sorted.length-1].push(':smiling_imp:');
+         //add emojis
+        if (scoreBoard.length > 3) {
+        	sorted[0].push(':crown:');
+        	sorted[1].push(':trophy:');
+        	sorted[2].push(':medal:');
+            if (sorted[sorted.length-1][1] < 0) sorted[sorted.length-1].push(':smiling_imp:');
+        }
+    	
         //format scoreboard output
     	sorted = sorted.map(function(scoreArr) {
     		return scoreArr.join(' = ')
